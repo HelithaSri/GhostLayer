@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>GhostLayer</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIconFile</key>
+	<string></string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>GhostLayer</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2024 GhostLayer. All rights reserved.</string>
+	<key>NSMainNibFile</key>
+	<string>MainMenu</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key>
+	<true/>
+	<key>LSUIElement</key>
+	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>GhostLayer needs camera access to capture images for your overlay notes.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>GhostLayer needs photo library access to add images to your overlay notes.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>GhostLayer needs microphone access for voice notes and recordings.</string>
+	<key>NSScreenCaptureUsageDescription</key>
+	<string>GhostLayer needs screen capture access to create screenshot annotations.</string>
+	<key>NSAccessibilityUsageDescription</key>
+	<string>GhostLayer needs accessibility access to register global hotkeys and control window behavior.</string>
+	<key>NSSystemAdministrationUsageDescription</key>
+	<string>GhostLayer needs system administration access to control window sharing properties for privacy mode.</string>
+</dict>
+</plist>

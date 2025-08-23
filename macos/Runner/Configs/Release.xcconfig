@@ -1,0 +1,31 @@
+#include "../../Flutter/Flutter-Release.xcconfig"
+#include "Warnings.xcconfig"
+#include "AppInfo.xcconfig"
+
+// Release-specific settings
+FLUTTER_BUILD_MODE=release
+ASSETCATALOG_COMPILER_OPTIMIZATION = space
+
+// Optimization settings
+DEBUG_INFORMATION_FORMAT = dwarf-with-dsym
+GCC_OPTIMIZATION_LEVEL = s
+SWIFT_OPTIMIZATION_LEVEL = -O
+
+// Architecture support for universal binary
+ARCHS = arm64 x86_64
+VALID_ARCHS = arm64 x86_64
+
+// Code signing for distribution
+CODE_SIGN_IDENTITY = -
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = 
+
+// Enable hardened runtime for security
+ENABLE_HARDENED_RUNTIME = YES
+
+// Entitlements
+CODE_SIGN_ENTITLEMENTS = Runner/Release.entitlements
+
+// Strip debug symbols in release
+COPY_PHASE_STRIP = YES
+STRIP_INSTALLED_PRODUCT = YES

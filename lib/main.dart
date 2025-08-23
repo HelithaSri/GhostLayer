@@ -22,6 +22,11 @@ void main() async {
   Hive.registerAdapter(ImagePinAdapter());
   Hive.registerAdapter(SettingsAdapter());
   
+  // Open Hive boxes before creating services
+  await Hive.openBox<Sticky>('stickies');
+  await Hive.openBox<ImagePin>('image_pins');
+  await Hive.openBox<Settings>('settings');
+  
   // Initialize window manager
   await windowManager.ensureInitialized();
   

@@ -13,9 +13,10 @@ class StorageService extends ChangeNotifier {
   static const String _settingsBoxName = 'settings';
   static const String _settingsKey = 'app_settings';
   
-  late Box<Sticky> _stickiesBox;
-  late Box<ImagePin> _imagePinsBox;
-  late Box<Settings> _settingsBox;
+  // Use already-opened boxes
+  Box<Sticky> get _stickiesBox => Hive.box<Sticky>(_stickiesBoxName);
+  Box<ImagePin> get _imagePinsBox => Hive.box<ImagePin>(_imagePinsBoxName);
+  Box<Settings> get _settingsBox => Hive.box<Settings>(_settingsBoxName);
   
   Settings _settings = Settings();
   final Uuid _uuid = const Uuid();
@@ -33,10 +34,7 @@ class StorageService extends ChangeNotifier {
   
   Future<void> _initializeStorage() async {
     try {
-      // Open Hive boxes
-      _stickiesBox = await Hive.openBox<Sticky>(_stickiesBoxName);
-      _imagePinsBox = await Hive.openBox<ImagePin>(_imagePinsBoxName);
-      _settingsBox = await Hive.openBox<Settings>(_settingsBoxName);
+      // Boxes are already opened in main.dart
       
       // Load or create settings
       _settings = _settingsBox.get(_settingsKey) ?? Settings();

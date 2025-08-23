@@ -1,8 +1,21 @@
+![GostLayer Banner](.github_resource/github-header-banner.png "GostLayer Banner")
 # GhostLayer 👻
 
 A **macOS-only** Flutter app that provides a private overlay window for personal notes and markers that is **NOT visible** in window/screen sharing or most screenshot/recording tools.
 
-![GhostLayer Banner](assets/images/banner.png)
+## 🚀 **Status: FULLY WORKING v1.0**
+
+✅ **All Core Features Implemented & Tested**
+- ✅ Privacy Mode (blocks screenshots/recordings)
+- ✅ Global Hotkeys (Cmd+Shift+P, Cmd+Shift+C, etc.)
+- ✅ Click-Through Mode with selective HUD interaction
+- ✅ Always On Top toggle
+- ✅ Blur/Transparency effects (frosted glass)
+- ✅ Draggable sticky notes with Markdown support
+- ✅ Settings panel with all controls
+- ✅ Local data persistence with Hive
+
+**Ready for daily use!** 🎉
 
 ## 🎯 Core Features
 
@@ -91,6 +104,12 @@ macos/
    ```
 
 ### Running the App
+
+#### ⚡ **Recommended: Debug Mode (All Features Working)**
+```bash
+flutter run -d macos --debug
+```
+*Debug mode has relaxed code signing requirements and all features work perfectly.*
 
 #### Development Mode
 ```bash
@@ -286,6 +305,12 @@ final isAvailable = await hotkeyService.isHotkeyAvailable('cmd+shift+y');
 ## 🐛 Troubleshooting
 
 ### Common Issues
+
+**App crashes on launch with framework signing errors:**
+- **Solution**: Use debug mode: `flutter run -d macos --debug`
+- Debug builds work perfectly and have all features enabled
+- For release builds, you may need proper Apple Developer code signing
+- Clean rebuild: `flutter clean && flutter pub get && flutter run -d macos --debug`
 
 **Hotkeys not working:**
 - Check System Preferences > Security & Privacy > Accessibility

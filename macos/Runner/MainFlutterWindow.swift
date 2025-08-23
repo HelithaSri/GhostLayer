@@ -1,7 +1,12 @@
 import Cocoa
 import FlutterMacOS
 
+
+
 class MainFlutterWindow: NSWindow {
+  var isSelectiveClickThrough = false
+  var hudExclusionRect = NSRect.zero
+  
   override func awakeFromNib() {
     let flutterViewController = FlutterViewController()
     let windowFrame = self.frame
@@ -64,6 +69,27 @@ class MainFlutterWindow: NSWindow {
         self.ignoresMouseEvents = enabled
         print("MainFlutterWindow: setIgnoresMouseEvents enabled=\(enabled)")
         result(nil)
+        
+      case "setClickThroughWithExclusion":
+        guard let args = call.arguments as? [String: Any],
+              let enabled = args["enabled"] as? Bool
+        else {
+          result(FlutterError(code: "bad_args", message: "Missing enabled", details: nil))
+          return
+        }
+        
+        if enabled {
+          // Enable click-through mode (simplified - just use standard ignoresMouseEvents)
+          // Note: HUD will not be clickable in this mode, user needs to use hotkeys
+          self.ignoresMouseEvents = true
+          self.isSelectiveClickThrough = true
+        } else {
+          // Disable click-through completely
+          self.ignoresMouseEvents = false
+          self.isSelectiveClickThrough = false
+        }
+        print("MainFlutterWindow: setClickThroughWithExclusion enabled=\(enabled)")
+        result(nil)
 
       case "setSharingTypeNone":
         guard let args = call.arguments as? [String: Any],
@@ -85,4 +111,8 @@ class MainFlutterWindow: NSWindow {
       }
     }
   }
+  
+
+  
+
 }

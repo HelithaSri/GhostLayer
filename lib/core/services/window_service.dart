@@ -75,14 +75,26 @@ class WindowService extends ChangeNotifier {
     }
   }
   
-  /// Toggle click-through mode - allows clicking through the window
+  /// Toggle click-through mode - allows clicking through the window except HUD area
   Future<void> toggleClickThrough() async {
     debugPrint('👆 CLICK-THROUGH TOGGLE CALLED - Current state: $_isClickThroughEnabled');
     try {
       _isClickThroughEnabled = !_isClickThroughEnabled;
-      debugPrint('👆 Calling platform method setIgnoresMouseEvents with enabled: $_isClickThroughEnabled');
-      await _channel.invokeMethod('setIgnoresMouseEvents', {
+      debugPrint('👆 Calling platform method setClickThroughWithExclusion with enabled: $_isClickThroughEnabled');
+      
+      // HUD coordinates (top-right corner) - need to calculate from window size
+      // The HUD is positioned at top-right with 16px margin
+      const hudWidth = 200.0;
+      const hudHeight = 100.0;
+      const hudX = -hudWidth - 16.0; // negative means from right edge
+      const hudY = 16.0; // from top edge
+      
+      await _channel.invokeMethod('setClickThroughWithExclusion', {
         'enabled': _isClickThroughEnabled,
+        'hudX': hudX,
+        'hudY': hudY,
+        'hudWidth': hudWidth,
+        'hudHeight': hudHeight,
       });
       notifyListeners();
       debugPrint('👆 Click-through mode ${_isClickThroughEnabled ? 'enabled' : 'disabled'} - SUCCESS');
@@ -100,8 +112,20 @@ class WindowService extends ChangeNotifier {
     
     try {
       _isClickThroughEnabled = enabled;
-      await _channel.invokeMethod('setIgnoresMouseEvents', {
+      
+      // HUD coordinates (top-right corner) - need to calculate from window size
+      // The HUD is positioned at top-right with 16px margin
+      const hudWidth = 200.0;
+      const hudHeight = 100.0;
+      const hudX = -hudWidth - 16.0; // negative means from right edge
+      const hudY = 16.0; // from top edge
+      
+      await _channel.invokeMethod('setClickThroughWithExclusion', {
         'enabled': enabled,
+        'hudX': hudX,
+        'hudY': hudY,
+        'hudWidth': hudWidth,
+        'hudHeight': hudHeight,
       });
       notifyListeners();
       debugPrint('Click-through mode set to $enabled');

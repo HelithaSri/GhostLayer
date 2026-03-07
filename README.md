@@ -364,9 +364,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/ghostlayer/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/ghostlayer/discussions)
-- **Email**: support@ghostlayer.com
+- **Issues**: [GitHub Issues](https://github.com/HelithaSri/GhostLayer/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/HelithaSri/GhostLayer/discussions)
+- **Email**: helitha.pravin+ghostlayer@gmail.com
 
 ---
 

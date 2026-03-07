@@ -368,6 +368,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Discussions**: [GitHub Discussions](https://github.com/HelithaSri/GhostLayer/discussions)
 - **Email**: [Contact Me](mailto:helitha.pravin+ghostlayer@gmail.com)
 
+## 👥 Contributors
+<a href="https://github.com/HelithaSri/GhostLayer/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=HelithaSri/GhostLayer" />
+</a>
+
 ---
 
 **Built with ❤️ for macOS privacy enthusiasts**

@@ -72,123 +72,128 @@ class StickyList extends StatelessWidget {
   }
 
   Widget _buildStickyItem(BuildContext context, Sticky sticky, StorageService storageService) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: sticky.color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: sticky.color.withOpacity(0.3),
-          width: 1,
-        ),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-        leading: Container(
-          width: 4,
-          height: double.infinity,
-          decoration: BoxDecoration(
-            color: sticky.color,
-            borderRadius: BorderRadius.circular(2),
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: sticky.color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: sticky.color.withOpacity(0.3),
+            width: 1,
           ),
         ),
-        title: Text(
-          sticky.title,
-          style: AppTheme.titleMedium,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 4),
-            Text(
-              _getPreviewText(sticky.content),
-              style: AppTheme.bodySmall.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: () {
+            _focusOnSticky(sticky, storageService);
+          },
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+            leading: Container(
+              width: 4,
+              height: double.infinity,
+              decoration: BoxDecoration(
+                color: sticky.color,
+                borderRadius: BorderRadius.circular(2),
               ),
-              maxLines: 2,
+            ),
+            title: Text(
+              sticky.title,
+              style: AppTheme.titleMedium,
+              maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
-            Row(
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  sticky.isVisible ? Icons.visibility : Icons.visibility_off,
-                  size: 12,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                ),
-                const SizedBox(width: 4),
+                const SizedBox(height: 4),
                 Text(
-                  '${(sticky.opacity * 100).round()}%',
+                  _getPreviewText(sticky.content),
                   style: AppTheme.bodySmall.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                   ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const Spacer(),
-                Text(
-                  _formatDate(sticky.updatedAt),
-                  style: AppTheme.bodySmall.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                  ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(
+                      sticky.isVisible ? Icons.visibility : Icons.visibility_off,
+                      size: 12,
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${(sticky.opacity * 100).round()}%',
+                      style: AppTheme.bodySmall.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      _formatDate(sticky.updatedAt),
+                      style: AppTheme.bodySmall.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-        trailing: PopupMenuButton<String>(
-          icon: Icon(
-            Icons.more_vert,
-            size: 16,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            trailing: PopupMenuButton<String>(
+              icon: Icon(
+                Icons.more_vert,
+                size: 16,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'toggle_visibility',
+                  child: ListTile(
+                    leading: Icon(
+                      sticky.isVisible ? Icons.visibility_off : Icons.visibility,
+                      size: 16,
+                    ),
+                    title: Text(sticky.isVisible ? 'Hide' : 'Show'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'toggle_minimize',
+                  child: ListTile(
+                    leading: Icon(
+                      sticky.isMinimized ? Icons.open_in_full : Icons.minimize,
+                      size: 16,
+                    ),
+                    title: Text(sticky.isMinimized ? 'Expand' : 'Minimize'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuDivider(),
+                PopupMenuItem(
+                  value: 'duplicate',
+                  child: const ListTile(
+                    leading: Icon(Icons.copy, size: 16),
+                    title: Text('Duplicate'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: const ListTile(
+                    leading: Icon(Icons.delete, size: 16, color: Colors.red),
+                    title: Text('Delete', style: TextStyle(color: Colors.red)),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
+              onSelected: (value) => _handleMenuAction(context, value, sticky, storageService),
+            ),
           ),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 'toggle_visibility',
-              child: ListTile(
-                leading: Icon(
-                  sticky.isVisible ? Icons.visibility_off : Icons.visibility,
-                  size: 16,
-                ),
-                title: Text(sticky.isVisible ? 'Hide' : 'Show'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            PopupMenuItem(
-              value: 'toggle_minimize',
-              child: ListTile(
-                leading: Icon(
-                  sticky.isMinimized ? Icons.open_in_full : Icons.minimize,
-                  size: 16,
-                ),
-                title: Text(sticky.isMinimized ? 'Expand' : 'Minimize'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem(
-              value: 'duplicate',
-              child: const ListTile(
-                leading: Icon(Icons.copy, size: 16),
-                title: Text('Duplicate'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            PopupMenuItem(
-              value: 'delete',
-              child: const ListTile(
-                leading: Icon(Icons.delete, size: 16, color: Colors.red),
-                title: Text('Delete', style: TextStyle(color: Colors.red)),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-          ],
-          onSelected: (value) => _handleMenuAction(context, value, sticky, storageService),
         ),
-        onTap: () {
-          // Focus on the sticky in the canvas
-          _focusOnSticky(sticky, storageService);
-        },
       ),
     );
   }

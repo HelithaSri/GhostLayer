@@ -72,138 +72,143 @@ class ImagePinList extends StatelessWidget {
   }
 
   Widget _buildImagePinItem(BuildContext context, ImagePin imagePin, StorageService storageService) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant.withOpacity(0.5),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
-          width: 1,
-        ),
-      ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(6),
-          child: Container(
-            width: 48,
-            height: 48,
-            child: _buildThumbnail(imagePin),
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+            width: 1,
           ),
         ),
-        title: Text(
-          imagePin.title,
-          style: AppTheme.titleMedium,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 4),
-            Text(
-              _getImageInfo(imagePin),
-              style: AppTheme.bodySmall.copyWith(
-                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(8),
+          onTap: () {
+            _focusOnImagePin(imagePin, storageService);
+          },
+          child: ListTile(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: SizedBox(
+                width: 48,
+                height: 48,
+                child: _buildThumbnail(imagePin),
               ),
+            ),
+            title: Text(
+              imagePin.title,
+              style: AppTheme.titleMedium,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 4),
-            Row(
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(
-                  imagePin.isVisible ? Icons.visibility : Icons.visibility_off,
-                  size: 12,
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                ),
-                const SizedBox(width: 4),
+                const SizedBox(height: 4),
                 Text(
-                  '${(imagePin.opacity * 100).round()}%',
+                  _getImageInfo(imagePin),
                   style: AppTheme.bodySmall.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                const SizedBox(width: 8),
-                if (imagePin.rotation != 0)
-                  Icon(
-                    Icons.rotate_right,
-                    size: 12,
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                  ),
-                const Spacer(),
-                Text(
-                  _formatDate(imagePin.updatedAt),
-                  style: AppTheme.bodySmall.copyWith(
-                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
-                  ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(
+                      imagePin.isVisible ? Icons.visibility : Icons.visibility_off,
+                      size: 12,
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '${(imagePin.opacity * 100).round()}%',
+                      style: AppTheme.bodySmall.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    if (imagePin.rotation != 0)
+                      Icon(
+                        Icons.rotate_right,
+                        size: 12,
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    const Spacer(),
+                    Text(
+                      _formatDate(imagePin.updatedAt),
+                      style: AppTheme.bodySmall.copyWith(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-        trailing: PopupMenuButton<String>(
-          icon: Icon(
-            Icons.more_vert,
-            size: 16,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            trailing: PopupMenuButton<String>(
+              icon: Icon(
+                Icons.more_vert,
+                size: 16,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+              ),
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'toggle_visibility',
+                  child: ListTile(
+                    leading: Icon(
+                      imagePin.isVisible ? Icons.visibility_off : Icons.visibility,
+                      size: 16,
+                    ),
+                    title: Text(imagePin.isVisible ? 'Hide' : 'Show'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'toggle_aspect_ratio',
+                  child: ListTile(
+                    leading: Icon(
+                      imagePin.maintainAspectRatio ? Icons.crop_free : Icons.aspect_ratio,
+                      size: 16,
+                    ),
+                    title: Text(imagePin.maintainAspectRatio ? 'Free Resize' : 'Lock Aspect'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'reset_rotation',
+                  child: const ListTile(
+                    leading: Icon(Icons.refresh, size: 16),
+                    title: Text('Reset Rotation'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                const PopupMenuDivider(),
+                PopupMenuItem(
+                  value: 'duplicate',
+                  child: const ListTile(
+                    leading: Icon(Icons.copy, size: 16),
+                    title: Text('Duplicate'),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: const ListTile(
+                    leading: Icon(Icons.delete, size: 16, color: Colors.red),
+                    title: Text('Delete', style: TextStyle(color: Colors.red)),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+              ],
+              onSelected: (value) => _handleMenuAction(context, value, imagePin, storageService),
+            ),
           ),
-          itemBuilder: (context) => [
-            PopupMenuItem(
-              value: 'toggle_visibility',
-              child: ListTile(
-                leading: Icon(
-                  imagePin.isVisible ? Icons.visibility_off : Icons.visibility,
-                  size: 16,
-                ),
-                title: Text(imagePin.isVisible ? 'Hide' : 'Show'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            PopupMenuItem(
-              value: 'toggle_aspect_ratio',
-              child: ListTile(
-                leading: Icon(
-                  imagePin.maintainAspectRatio ? Icons.crop_free : Icons.aspect_ratio,
-                  size: 16,
-                ),
-                title: Text(imagePin.maintainAspectRatio ? 'Free Resize' : 'Lock Aspect'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            PopupMenuItem(
-              value: 'reset_rotation',
-              child: const ListTile(
-                leading: Icon(Icons.refresh, size: 16),
-                title: Text('Reset Rotation'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            const PopupMenuDivider(),
-            PopupMenuItem(
-              value: 'duplicate',
-              child: const ListTile(
-                leading: Icon(Icons.copy, size: 16),
-                title: Text('Duplicate'),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-            PopupMenuItem(
-              value: 'delete',
-              child: const ListTile(
-                leading: Icon(Icons.delete, size: 16, color: Colors.red),
-                title: Text('Delete', style: TextStyle(color: Colors.red)),
-                contentPadding: EdgeInsets.zero,
-              ),
-            ),
-          ],
-          onSelected: (value) => _handleMenuAction(context, value, imagePin, storageService),
         ),
-        onTap: () {
-          // Focus on the image pin in the canvas
-          _focusOnImagePin(imagePin, storageService);
-        },
       ),
     );
   }

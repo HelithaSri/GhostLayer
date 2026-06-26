@@ -298,8 +298,11 @@ class WindowService extends ChangeNotifier {
   /// Get current window information
   Future<Map<String, dynamic>?> getWindowInfo() async {
     try {
-      final result = await _channel.invokeMethod('getWindowInfo');
-      return Map<String, dynamic>.from(result);
+      final Object? result = await _channel.invokeMethod<Object?>('getWindowInfo');
+      if (result is Map) {
+        return Map<String, dynamic>.from(result);
+      }
+      return null;
     } catch (e) {
       debugPrint('Error getting window info: $e');
       return null;

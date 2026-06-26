@@ -47,8 +47,3 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
-
-# Platform-specific configuration
-platforms:
-  macos:
-    default_package: ghost_layer
